@@ -20,7 +20,7 @@
 #define SPEED_OF_SOUND 343
 #define MAX_SONAR_RANGE 10
 #define DELAY_BETWEEN_TEST 500
-#define TIMER_MAX 255
+#define TIMER_MAX 65535 // 255
 
 /**********************ERRORDEFINATION*************************************/
 
@@ -90,9 +90,9 @@ void trigger_sonar() {
   _delay_us(1);
 }
 
-ISR(TIMER0_OVF_vect) { // Timer1 overflow interrupt
+ISR(TIMER1_OVF_vect) { // Timer1 overflow interrupt
   overFlowCounter++;
-  TCNT0 = 0;
+  TCNT1 = 0;
 }
 int read_sonar(void) {
   int dist_in_cm = 0;
@@ -107,20 +107,20 @@ int read_sonar(void) {
     }
   }
 
-  TCNT0 = 0;             // reset timer
-  TCCR0 |= (1 << CS00);  // start 16 bit timer with no prescaler
-  TIMSK |= (1 << TOIE0); // enable overflow interrupt on timer1
+  TCNT1 = 0;             // reset timer
+  TCCR1B |= (1 << CS10); // start 16 bit timer with no prescaler
+  TIMSK |= (1 << TOIE1); // enable overflow interrupt on timer1
   overFlowCounter = 0;   // reset overflow counter
   sei();                 // enable global interrupts
 
   while ((ECHO_PIN & (1 << ECHO_BIT))) { // while echo pin is still high
-    if (((overFlowCounter * TIMER_MAX) + TCNT0) > SONAR_TIMEOUT) {
+    if (((overFlowCounter * TIMER_MAX) + TCNT1) > SONAR_TIMEOUT) {
       return ECHO_ERROR; // No echo within sonar range
     }
   }
-  TCCR0 = 0x00; // stop 16 bit timer with no prescaler
-  cli();        // disable global interrupts
-  no_of_ticks = ((overFlowCounter * TIMER_MAX) + TCNT0); // counter count
+  TCCR1B = 0x00; // stop 16 bit timer with no prescaler
+  cli();         // disable global interrupts
+  no_of_ticks = ((overFlowCounter * TIMER_MAX) + TCNT1); // counter count
   dist_in_cm =
       (no_of_ticks / (CONVERT_TO_CM * CYCLES_PER_US)); // distance in cm
   return (dist_in_cm);

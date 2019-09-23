@@ -5,7 +5,6 @@
 
 #include <avr/io.h>
 #include <avr/pgmspace.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <util/delay.h>
 
@@ -43,18 +42,18 @@
 #define eS_PORTD6 36
 #define eS_PORTD7 37
 
-#define RS eS_PORTD2
-#define EN eS_PORTD3
+#define RS eS_PORTD7
+#define EN eS_PORTD6
 
 #ifndef D0
 #define D0 eS_PORTA0
 #define D1 eS_PORTA1
 #define D2 eS_PORTA2
 #define D3 eS_PORTA3
-#define D4 eS_PORTD4
-#define D5 eS_PORTD5
-#define D6 eS_PORTD6
-#define D7 eS_PORTD7
+#define D4 eS_PORTD5
+#define D5 eS_PORTD4
+#define D6 eS_PORTD3
+#define D7 eS_PORTD2
 #endif
 
 void pinChange(int a, int b) {
