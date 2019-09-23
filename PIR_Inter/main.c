@@ -11,8 +11,6 @@ int main(void) {
       PORTB = 0x00;
     } else if (bit_is_set(PINA, 0)) {
       PORTB = 0xFF;
-      _delay_ms(100);
-      PORTB = 0x00;
     }
   }
   return 0;
