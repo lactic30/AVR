@@ -1,3 +1,10 @@
+
+
+
+#ifndef LCD_H_
+#define LCD_H_
+
+
 #include <avr/io.h>
 #include <util/delay.h>
 
@@ -386,4 +393,7 @@ void Lcd4_Shift_Left() {
   Lcd4_Cmd(0x01);
   Lcd4_Cmd(0x08);
 }
+
+ 
+#endif /* LCD_H_ */
 // End LCD 4 Bit Interfacing Functions
