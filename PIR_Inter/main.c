@@ -2,15 +2,16 @@
 #include <util/delay.h>
 
 int main(void) {
-  DDRA = 0x00; // PIR SENSOR DIRECTION PORT
-  DDRB = 0xFF; // LED OUTPORT DIRECTION PORT
+  DDRA &= ~(0xFE);
+  PORTA |= 0xFF;
   /* Replace with your application code */
   while (1) {
-    PORTB = 0x00;
-    if (bit_is_clear(PINA, 0)) {
-      PORTB = 0x00;
-    } else if (bit_is_set(PINA, 0)) {
+    if (PINA== 0xFF) {
+      DDRB = 0xFF;
       PORTB = 0xFF;
+
+    } else {
+      PORTB = 0x00;
     }
   }
   return 0;
