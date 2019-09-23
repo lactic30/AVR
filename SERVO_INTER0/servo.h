@@ -4,15 +4,15 @@
  * In this file all timers(TIMER0,TIMER1,TIMER2) Initializating
  * All timers are working in FAST PWM mode
  * Timer0 value must exits between 1 to 9 (according to setting)
- * Timer1 value must exits between 19500 to 17500 (according to setting)
- * Timer2 value must exits between 3 to 19 (according to setting)
+ * Timer1 value must exits between 19500 to 17500 and F_CPU become
+ * 1000000(according to setting) Timer2 value must exits between 3 to 19
+ * (according to setting)
  */
 
-#include <avr/io.h>
-#include <util/delay.h>
+#include "lcd.h"
 
 void TimerInit(uint8_t a);
-void SetOutput(uint8_t duty, uint8_t b);
+void SetOutput(uint8_t b, uint8_t duty);
 
 /*
  * Timer Initializing
@@ -26,6 +26,7 @@ void TimerInit(uint8_t a) {
     // Set OC0 PIN as output. It is  PB3 on ATmega16/ATmega32
     DDRB |= (1 << PB3);
   } else if (a == 2) {
+
     TCCR1A |= 1 << WGM11 | 1 << COM1A1 | 1 << COM1A0;
     TCCR1B |= 1 << WGM13 | 1 << WGM12 | 1 << CS10;
     ICR1 = 19999;
@@ -45,7 +46,7 @@ void TimerInit(uint8_t a) {
  * Duty = Required duty cycle for InitPWM
  * B    = Timer value (TIMER0 =1,Timer1 =2,Timer =3)
  */
-void SetOutput(uint8_t duty, uint8_t b) {
+void SetOutput(uint8_t b, uint8_t duty) {
   if (b == 1) {
     OCR0 = duty;
   } else if (b == 2) {
